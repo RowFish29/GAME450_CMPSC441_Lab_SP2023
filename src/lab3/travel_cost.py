@@ -38,6 +38,40 @@ def get_route_cost(route_coordinate, game_map):
 
     :return: a floating point number representing the cost of the route
     """
+    rise = route_coordinate[0][1] - route_coordinate[1][1]
+    run = route_coordinate[0][0] - route_coordinate[1][0]
+
+    x_add = 1
+    y_add = 1
+    #if the second point is lower or to the left of the starting point, change how we increment
+    if rise > 0:
+        y_add = -1
+    if run > 0:
+        x_add = -1
+    
+    #loop through by the slope until reaching destination
+    path = []
+    curr_x = route_coordinate[0][0]
+    curr_y = route_coordinate[0][1]
+
+    path.append(route_coordinate[0])
+
+    while(path[len(path)-1] != route_coordinate[1]):
+        #if the current x coordinate has not reached the end point's x coordinate
+        if(curr_x != route_coordinate[1][0]):
+            curr_x += x_add
+            path.append((curr_x, curr_y))
+            
+        #if the current y coordinate has not reached the end point's y coordinate
+        if(curr_y != route_coordinate[1][1]):
+            curr_y += y_add
+            path.append((curr_x, curr_y))
+    
+    print("Start: ", path[0])
+    print("End: ", path[len(path) -1 ])
+
+        
+       
     # Build a path from start to end that looks like [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 4)]
     pass 
     return game_map[tuple(zip(*path))].sum()
