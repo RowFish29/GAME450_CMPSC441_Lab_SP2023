@@ -34,6 +34,7 @@ You get a 1 point for beating the single agent, 2 points for beating the switch 
 and 2 points for beating the mimic agent.
 
 '''
+# we write a class that wins against the 3 players no matter what agent we are facing
 
 from rock_paper_scissor import Player
 from rock_paper_scissor import run_game
@@ -45,14 +46,45 @@ class AiPlayer(Player):
         self.initial_weapon = random_weapon_select()
     
     def weapon_selecting_strategy(self):
+        #single always chooses same 
+        #switch changes every 10 rounds
+        #Mimic follows suit
+        #rock, paper, scissors
+        #0, 1, 2
+        #rock v paper = paper (0, 1, 1)
+        #paper v scissors = scissors (1, 2, 2)
+        #scissors v rock = rock (2, 0, 0)
+
+        #if this is the first move
+        if len(self.opponent_choices) == 0:
+            return self.initial_weapon
+        
+        if(len(self.my_choices) > 1):
+            #if the players last move was chosen, then its likely a mimic
+            #Test 1 - Final tally:  [99.33676767676765, 93.22533293143336, 99.30000000000003]
+            #Test 2 - Final tally:  [99.33696969696962, 93.2456084503933, 99.34000000000003]
+            #Test 3 - Final tally:  [99.27575757575752, 93.22510121617613, 99.20000000000002]
+            if((self.my_choices[-2] == self.opponent_choices[-1])):
+                #use the last decision made to beat the mimic
+                if(self.my_choices[-1] == 2):
+                    return 0
+                else:
+                    return self.my_choices[-1] + 1
+
+        return (self.opponent_choices[-1]+1)%3
         pass
+
 
 
 if __name__ == '__main__':
     final_tally = [0]*3
     for agent in range(3):
+        #do 50 rounds rn instead
         for i in range(100):
             tally = [score for _, score in run_game(AiPlayer("AI"), 100, agent)]
-            final_tally[agent] += tally[0]/sum(tally)
+            if sum(tally) == 0:
+                final_tally[agent] = 0
+            else:
+                final_tally[agent] += tally[0]/sum(tally)
 
     print("Final tally: ", final_tally)  
