@@ -79,7 +79,6 @@ class AiPlayer(Player):
 if __name__ == '__main__':
     final_tally = [0]*3
     for agent in range(3):
-        #do 50 rounds rn instead
         for i in range(100):
             tally = [score for _, score in run_game(AiPlayer("AI"), 100, agent)]
             if sum(tally) == 0:
