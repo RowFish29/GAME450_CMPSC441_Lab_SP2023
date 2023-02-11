@@ -8,6 +8,7 @@ In this lab, you will write a function that calculates the cost of a route betwe
 A terrain is generated for you 
 '''
 import numpy as np
+import matplotlib.pyplot as plt
 
 def get_route_cost(route_coordinate, game_map):
     """
@@ -41,6 +42,15 @@ def get_route_cost(route_coordinate, game_map):
     rise = route_coordinate[0][1] - route_coordinate[1][1]
     run = route_coordinate[0][0] - route_coordinate[1][0]
 
+    x_values = [route_coordinate[0][0], route_coordinate[1][0]]
+    y_values = [route_coordinate[0][1], route_coordinate[1][1]]
+
+    np.linspace()
+
+    points, = plt.plot(x_values, y_values, 'bo', linestyle="--")
+    plt.legend()
+
+    
     x_add = 1
     y_add = 1
     #if the second point is lower or to the left of the starting point, change how we increment
@@ -48,6 +58,9 @@ def get_route_cost(route_coordinate, game_map):
         y_add = -1
     if run > 0:
         x_add = -1
+
+
+
     
     #loop through by the slope until reaching destination
     path = []
