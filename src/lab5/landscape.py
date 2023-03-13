@@ -1,14 +1,17 @@
 import matplotlib.pyplot as plt
 from perlin_noise import PerlinNoise
 import numpy as np
+import random
 
 def get_elevation(size):
     xpix, ypix = size
     elevation = np.array([])
     '''Play around with perlin noise to get a better looking landscape (This is required for the lab)'''
     
-    noise = PerlinNoise(octaves=4)
-    elevation = np.array([[noise([i/xpix, j/ypix]) for j in range(ypix)] for i in range(xpix)])
+    noise = PerlinNoise(octaves=3)
+    k = random.randint(1, 10)
+    elevation = np.array([[1 * noise([i/xpix, j/ypix]) for j in range(ypix)] for i in range(xpix)])
+    elevation += np.array([[.05 * noise([i/xpix , j/ypix]) for j in range(ypix)] for i in range(xpix)])
 
     return elevation
 
@@ -21,6 +24,10 @@ def elevation_to_rgba(elevation):
     landscape = landscape.astype('uint8')
     return landscape
  
+def rand_number():
+    top = random.randint(1,10)
+    bottom = random.randint(10,100)
+    return top/bottom
 
 get_landscape = lambda size: elevation_to_rgba(get_elevation(size))
 

@@ -13,14 +13,13 @@ fulfilled. Clearly explain in comments which line of code and variables are used
 import matplotlib.pyplot as plt
 import pygad
 import numpy as np
-
 import sys
 from pathlib import Path
+import random
 
 sys.path.append(str((Path(__file__) / ".." / ".." / "..").resolve().absolute()))
 
-from src.lab5.landscape import elevation_to_rgba
-
+from src.lab5.landscape import elevation_to_rgba, get_elevation
 
 def game_fitness(cities, idx, elevation, size):
     fitness = 0.0001  # Do not return a fitness of 0, it will mess up the algorithm.
@@ -30,6 +29,26 @@ def game_fitness(cities, idx, elevation, size):
     2. The cities should have a realistic distribution across the landscape
     3. The cities may also not be on top of mountains or on top of each other
     """
+    # AVOID BEING UNDER WATER OR ON MOUNTAINS AND OTHER CITIES
+    cities = solution_to_cities(cities, size)
+    for city in cities:
+        if((elevation[city[0], city[1]] < 0.30) | (elevation[city[0], city[1]] > .80)):
+            #have the city regenerate until its not in off limits terrain
+            #city = [random.randint(0, 99), random.randint(0, 99)]
+            fitness -= 2
+        else:
+            fitness += 4
+        for city2 in cities:
+            #if the cities are the same, move on to the next city
+            if(city.all() == city2.all()):
+                continue
+            if(abs(city[0]-city2[0]) < 4 | abs(city[1]-city2[1]) < 4):
+                fitness -= 2
+            else:
+                fitness += 4
+    if(fitness == 0):
+        fitness = 0.0001
+    
     return fitness
 
 
@@ -114,7 +133,8 @@ if __name__ == "__main__":
     size = 100, 100
     n_cities = 10
     elevation = []
-    """ initialize elevation here from your previous code"""
+    elevation = get_elevation(size)
+
     # normalize landscape
     elevation = np.array(elevation)
     elevation = (elevation - elevation.min()) / (elevation.max() - elevation.min())
@@ -125,6 +145,7 @@ if __name__ == "__main__":
         cities, idx, elevation=elevation, size=size
     )
     fitness_function, ga_instance = setup_GA(fitness, n_cities, size)
+
 
     # Show one of the initial solutions.
     cities = ga_instance.initial_population[0]
