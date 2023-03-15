@@ -14,10 +14,10 @@ import numpy as np
 data = pd.read_csv("src/lab10/heart.csv")
 
 # Transform the categorical variables into dummy variables.
-print(data.head())
+#print(data.head())
 string_col = data.select_dtypes(include="object").columns
 df = pd.get_dummies(data, columns=string_col, drop_first=False)
-print(data.head())
+#print(data.head())
 
 y = df.HeartDisease.values
 x = df.drop(["HeartDisease"], axis=1)
@@ -34,10 +34,10 @@ sklearn_model.fit(x_train, y_train)
 print("Accuracy of model: {}\n".format(sklearn_model.score(x_test, y_test)))
 
 # Normalizing data
-def minmax_scaling(column):
-    return (column - column.min()) / (column.max() - column.min())
+def normalizing(column):
+    return (column - column.min()) / (column.__len__())
 for col in x:
-    df[col] = minmax_scaling(df[col])
+    df[col] = normalizing(df[col])
 
 scaler = preprocessing.Normalizer()
 scaler.fit(df)
