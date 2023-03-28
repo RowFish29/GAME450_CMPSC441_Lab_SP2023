@@ -1,3 +1,9 @@
+
+import sys
+from pathlib import Path
+sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
+from lab11.pygame_ai_player import PyGameAICombatPlayer
+from lab11 import pygame_combat
 ''' 
 Lab 12: Beginnings of Reinforcement Learning
 We will modularize the code in pygrame_combat.py from lab 11 together.
@@ -11,3 +17,18 @@ Note that observation/state is a tuple of the form (player1_health, player2_heal
 Action is simply the weapon selected by the player.
 Reward is the reward for the player for that turn.
 '''
+
+def run_episode(player, opponenet):
+    current_game = pygame_combat.Combat()
+    while not current_game.gameOver:
+        reward = pygame_combat.run_turn(current_game, player=player, opponent=opponenet)
+
+    observation = [player.health, opponenet.health]
+    return_value = [observation, player.weapon, reward]
+    print(return_value)
+    return return_value
+
+    # return tuple (observation/state, action, reward)
+    #   observation/state -> tuple of (player1_health, player2_health)
+    #   action -> weapon selected by player
+    #   reward -> what player gets for that turn

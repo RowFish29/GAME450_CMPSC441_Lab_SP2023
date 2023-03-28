@@ -2,7 +2,7 @@
 import random
 import pygame
 import time
-from turn_combat import CombatPlayer
+from lab11.turn_combat import CombatPlayer
 
 class PyGameAIPlayer:
     def __init__(self, state) -> None:
