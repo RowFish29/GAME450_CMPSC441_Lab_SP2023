@@ -18,15 +18,22 @@ Action is simply the weapon selected by the player.
 Reward is the reward for the player for that turn.
 '''
 
-def run_episode(player, opponenet):
-    current_game = pygame_combat.Combat()
-    while not current_game.gameOver:
-        reward = pygame_combat.run_turn(current_game, player=player, opponent=opponenet)
+def run_episode(player, opponent):
 
-    observation = [player.health, opponenet.health]
+    current_game = pygame_combat.Combat()
+
+    while not current_game.gameOver:
+        reward = pygame_combat.run_turn(current_game, player=player, opponent=opponent)
+
+    observation = [player.health, opponent.health]
     return [observation, player.weapon, reward]
 
     # return tuple (observation/state, action, reward)
     #   observation/state -> tuple of (player1_health, player2_health)
     #   action -> weapon selected by player
     #   reward -> what player gets for that turn
+
+if __name__ == "__main__":
+    player = PyGameAICombatPlayer("Ira")
+    opp = pygame_combat.PyGameComputerCombatPlayer("Computer")
+    print(run_episode(player, opp))

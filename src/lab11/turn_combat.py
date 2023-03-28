@@ -71,12 +71,14 @@ class Combat:
         if player.health < 1 and opponent.health > 0:
             self.gameOver = True
             self.reward = -1
+            return -1
         elif opponent.health < 1 and player.health > 0:
             self.gameOver = True
-            self.reward = 1
+            return 1
         elif player.health < 1 and opponent.health < 1:
             self.gameOver = True
             self.reward = 0
+            return 0
 
     def displayResult(self, player, opponent):
         print(
