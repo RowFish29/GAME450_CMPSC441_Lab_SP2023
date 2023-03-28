@@ -6,6 +6,7 @@ from pygame_combat import run_pygame_combat
 from pygame_human_player import PyGameHumanPlayer
 from landscape import get_landscape, get_combat_bg
 from pygame_ai_player import PyGameAIPlayer
+import time
 
 from pathlib import Path
 
@@ -98,8 +99,6 @@ if __name__ == "__main__":
 
     player = PyGameHumanPlayer()
 
-    """ Add a line below that will reset the player variable to 
-    a new object of PyGameAIPlayer class."""
 
     state = State(
         current_city=start_city,
@@ -109,8 +108,13 @@ if __name__ == "__main__":
         cities=cities,
         routes=routes,
     )
+    
+    """ Add a line below that will reset the player variable to 
+    a new object of PyGameAIPlayer class."""
+    player = PyGameAIPlayer(state)
 
     while True:
+        time.sleep(.01)
         action = player.selectAction(state)
         if 0 <= int(chr(action)) <= 9:
             if int(chr(action)) != state.current_city and not state.travelling:
