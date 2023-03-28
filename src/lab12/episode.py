@@ -24,9 +24,7 @@ def run_episode(player, opponenet):
         reward = pygame_combat.run_turn(current_game, player=player, opponent=opponenet)
 
     observation = [player.health, opponenet.health]
-    return_value = [observation, player.weapon, reward]
-    print(return_value)
-    return return_value
+    return [observation, player.weapon, reward]
 
     # return tuple (observation/state, action, reward)
     #   observation/state -> tuple of (player1_health, player2_health)
