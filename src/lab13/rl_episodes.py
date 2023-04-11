@@ -21,6 +21,8 @@ sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
 from lab11.pygame_combat import PyGameComputerCombatPlayer
 from lab11.turn_combat import CombatPlayer
 from lab12.episode import run_episode
+from lab11.pygame_ai_player import PyGameAICombatPlayer
+from lab12.episode import pygame_combat
 
 from collections import defaultdict
 import random
@@ -74,6 +76,43 @@ def run_episodes(n_episodes):
         Return the action values as a dictionary of dictionaries where the keys are states and 
             the values are dictionaries of actions and their values.
     '''
+    action_values = {}
+
+    names = ["Legolas", "Saruman"]
+    for i in range(n_episodes):
+        player = PyGameRandomCombatPlayer("Ira")
+        opp = pygame_combat.PyGameComputerCombatPlayer("Computer")
+        ep_return = run_random_episode(player, opp)
+        history = get_history_returns(ep_return)
+
+        #retrieve all states in returned history
+        for state in history:
+            #state[0] should equal the action 
+            #state[1] should be the reward the player got for this specific state-action pair
+            if state not in action_values:
+                action_values[state] = {}
+
+            for action in history[state]:
+
+                if action not in action_values[state]:
+                    action_values[state][action] = {}
+
+                action_values[state][action].append(history[state][action])
+            
+        
+        '''
+        state_action = {
+            state_1 = { 
+                action_1{ 1, 2, 1, 3, 5}
+                action_2{ 2, 4, 1, 2, 2}
+            }
+            state_2 = { 
+                action_1{ 1, 2, 1, 3, 5}
+                action_2{ 2, 4, 1, 2, 2}
+            }
+        }
+        numbers in the action dictionaries are the rewards that were given for the specific state-action pair
+        '''
 
     return action_values
 
@@ -99,7 +138,8 @@ def test_policy(policy):
 
 
 if __name__ == "__main__":
-    action_values = run_episodes(10000)
+    #too many runs to do rn, 10000
+    action_values = run_episodes(100)
     print(action_values)
     optimal_policy = get_optimal_policy(action_values)
     print(optimal_policy)

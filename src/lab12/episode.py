@@ -19,14 +19,15 @@ Reward is the reward for the player for that turn.
 '''
 
 def run_episode(player, opponent):
-
+    #get all actions from the current game
     current_game = pygame_combat.Combat()
-
+    GameState = []
     while not current_game.gameOver:
         reward = pygame_combat.run_turn(current_game, player=player, opponent=opponent)
+        observation = (player.health, opponent.health)
+        GameState.append([observation, player.weapon, reward])
 
-    observation = [player.health, opponent.health]
-    return [observation, player.weapon, reward]
+    return GameState
 
     # return tuple (observation/state, action, reward)
     #   observation/state -> tuple of (player1_health, player2_health)

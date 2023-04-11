@@ -3,6 +3,7 @@ import random
 import pygame
 import time
 from lab11.turn_combat import CombatPlayer
+import logging
 
 class PyGameAIPlayer:
     def __init__(self, state) -> None:
@@ -55,15 +56,18 @@ class PyGameAICombatPlayer(CombatPlayer):
         super().__init__(name)
 
     def weapon_selecting_strategy(self):
-        while True:
-            time.sleep(.05)
-            opp_choice = self.opponent_choices
-            if((opp_choice[-1] == 0)):
-                self.weapon = 1
-                return self.weapon
-            if(opp_choice[-1] == 1):
-                self.weapon = 2
-                return self.weapon
-            if(opp_choice[-1] == 2):
-                self.weapon = 0
-                return self.weapon
+        time.sleep(.05)
+        opp_choice = self.opponent_choices
+        if(opp_choice.__len__() == 0):
+            self.weapon = 1
+            return self.weapon
+        if((opp_choice[-1] == 0)):
+            self.weapon = 1
+            return self.weapon
+        if(opp_choice[-1] == 1):
+            self.weapon = 2
+            return self.weapon
+        if(opp_choice[-1] == 2):
+            self.weapon = 0
+            return self.weapon
+        #["Sword", "Arrow", "Fire"]

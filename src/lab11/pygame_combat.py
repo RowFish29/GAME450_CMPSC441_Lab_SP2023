@@ -59,18 +59,6 @@ def draw_combat_on_window(combat_surface, screen, player_sprite, opponent_sprite
     pygame.display.update()
 
 
-def run_turn(currentGame, player, opponent):
-    players = [player, opponent]
-    states = list(reversed([(player.health, player.weapon) for player in players]))
-    for current_player, state in zip(players, states):
-        current_player.selectAction(state)
-
-    currentGame.newRound()
-    currentGame.takeTurn(player, opponent)
-    print("%s's health = %d" % (player.name, player.health))
-    print("%s's health = %d" % (opponent.name, opponent.health))
-    reward = currentGame.checkWin(player, opponent)
-
 
 def run_pygame_combat(combat_surface, screen, player_sprite):
     currentGame = Combat()
@@ -86,11 +74,6 @@ def run_pygame_combat(combat_surface, screen, player_sprite):
 
     # Main Game Loop
     while not currentGame.gameOver:
-<<<<<<< HEAD
-        draw_combat_screen(combat_surface, screen, player_sprite, opponent_sprite)
-        run_turn(currentGame, player, opponent, players)
-=======
         draw_combat_on_window(combat_surface, screen, player_sprite, opponent_sprite)
 
         run_turn(currentGame, player, opponent)
->>>>>>> 02420b0ab485337704763d09b425a884e216686a
