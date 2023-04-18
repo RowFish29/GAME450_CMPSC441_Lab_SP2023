@@ -23,8 +23,8 @@ def run_episode(player, opponent):
     current_game = pygame_combat.Combat()
     GameState = []
     while not current_game.gameOver:
-        reward = pygame_combat.run_turn(current_game, player=player, opponent=opponent)
         observation = (player.health, opponent.health)
+        reward = pygame_combat.run_turn(current_game, player=player, opponent=opponent)
         GameState.append([observation, player.weapon, reward])
 
     return GameState

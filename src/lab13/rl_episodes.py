@@ -86,9 +86,30 @@ def run_episodes(n_episodes):
         history = get_history_returns(ep_return)
 
         #retrieve all states in returned history
-        for state in history:
-            #state[0] should equal the action 
-            #state[1] should be the reward the player got for this specific state-action pair
+
+        stateList = list(history.keys())
+        splitList = list(history.values())
+
+        # Create the desired dictionary and fill in with the correct information
+        # go through all of the states taken from the history dictionary
+        for state in stateList:
+            # if the state is not in the dictionary yet, create empty dictionary for it
+            if state not in action_values:
+                action_values[state] = {}
+            # each action result is contained in a dictionary, dic
+            for dic in splitList:
+                # there can be more than one action/result in the dictionary
+                for key in dic.keys():
+                    # if the state with that action is not created yet, create it
+                    if key not in action_values[state]:
+                        action_values[state][key] = []
+                    action_values[state][key].append(dic[key])
+
+        # Average all of the results for every state-action pair
+
+
+        print(splitList)
+        '''
             if state not in action_values:
                 action_values[state] = {}
 
@@ -97,13 +118,16 @@ def run_episodes(n_episodes):
                 if action not in action_values[state]:
                     action_values[state][action] = {}
 
-                action_values[state][action].append(history[state][action])
-            
+                resultList = list((action_values[state][action]).values())
+                
+                print(resultList)
+                #action_values[state][action].update(history[state][action])
+        '''
         
         '''
         state_action = {
             state_1 = { 
-                action_1{ 1, 2, 1, 3, 5}
+                action_1: 1, 2, 1, 3, 5}
                 action_2{ 2, 4, 1, 2, 2}
             }
             state_2 = { 
@@ -114,6 +138,12 @@ def run_episodes(n_episodes):
         numbers in the action dictionaries are the rewards that were given for the specific state-action pair
         '''
 
+    for state in action_values:
+        for action in action_values[state]:
+            listLength = len(action_values[state][action])
+            sumList = sum(action_values[state][action])
+            average = sumList/listLength
+            action_values[state][action] = average
     return action_values
 
 
@@ -139,7 +169,7 @@ def test_policy(policy):
 
 if __name__ == "__main__":
     #too many runs to do rn, 10000
-    action_values = run_episodes(100)
+    action_values = run_episodes(10000)
     print(action_values)
     optimal_policy = get_optimal_policy(action_values)
     print(optimal_policy)
