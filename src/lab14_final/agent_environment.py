@@ -1,20 +1,18 @@
 import sys
 import pygame
 import random
-from sprite import Sprite
-from pygame_combat import run_pygame_combat
-from pygame_human_player import PyGameHumanPlayer
-from landscape import get_landscape, get_combat_bg
-from pygame_ai_player import PyGameAIPlayer
+from os.path import dirname, abspath
 import time
-
 from pathlib import Path
 
 sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
 
-
-
+from lab11.sprite import Sprite
 from lab2.cities_n_routes import get_randomly_spread_cities, get_routes
+from lab11.pygame_combat import run_pygame_combat
+from lab11.pygame_human_player import PyGameHumanPlayer
+from lab11.landscape import get_landscape, get_combat_bg
+from lab11.pygame_ai_player import PyGameAIPlayer
 
 
 pygame.font.init()
@@ -118,6 +116,7 @@ if __name__ == "__main__":
     while True:
         time.sleep(.01)
         action = player.selectAction(state)
+        print(chr(action))
         if 0 <= int(chr(action)) <= 9:
             if int(chr(action)) != state.current_city and not state.travelling:
                 start = cities[state.current_city]

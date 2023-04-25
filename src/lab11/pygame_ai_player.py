@@ -21,22 +21,37 @@ class PyGameAIPlayer:
             current_city = state.cities[state.current_city]
             routes = state.routes   
             connect_routes = []
+            one_route = []
             for position in range(len(routes)):
                 #check if a route is connected to the current city
+                #if the current city is in the first position
                 if(routes[position][0] == current_city):
-                    #if(routes[position][1] != self.last_city):
-                    connect_routes.append(cityNum(routes[position][1], state))
+                    #try not to backtrack to the city it just came from
+                    if(routes[position][1] != self.last_city):
+                        connect_routes.append(cityNum(routes[position][1], state))
+                    else:
+                        one_route.append(cityNum(routes[position][1], state))
 
+                #if the current city is in the second position
                 if(routes[position][1] == current_city):
-                    #if(routes[position][0] != self.last_city):
-                    connect_routes.append(cityNum(routes[position][0], state))
+                    #try not to backtrack to the city it just came from
+                    if(routes[position][0] != self.last_city):
+                        connect_routes.append(cityNum(routes[position][0], state))
+                    else:
+                        one_route.append(cityNum(routes[position][0], state))
             
-            if(connect_routes.__len__() == 0):
+            if(connect_routes.__len__() == 0 & one_route.__len__() == 0):
                 return 9
-            RandomSelection = random.randint(0, connect_routes.__len__() - 1)
+            
+            if(connect_routes.__len__() != 0):
+                RandomSelection = random.randint(0, connect_routes.__len__() - 1)
+                self.last_city = current_city
+                return ord(str(connect_routes[RandomSelection]))
+            
+            else:
+                self.last_city = current_city
+                return ord(str(one_route[0]))
 
-            self.last_city = current_city
-            return ord(str(connect_routes[RandomSelection]))
         return ord(str(state.current_city))
 
 def cityNum(travel_city, state):
