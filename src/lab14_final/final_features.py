@@ -1,5 +1,6 @@
 import openai as ai
-ai.api_key='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'
+import os
+ai.api_key=os.getenv("OPENAI_API_KEY")
 
 def generate_response(text, print_output=False):
     completions = ai.Completion.create(
