@@ -6,6 +6,7 @@ from pathlib import Path
 
 sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
 from lab4.rock_paper_scissor import Player
+from lab14_final.final_features import generate_response
 
 weapons = ["Sword", "Arrow", "Fire"]
 
@@ -67,18 +68,38 @@ class Combat:
 
     # Check if either or both Players is below zero health
     def checkWin(self, player, opponent):
+        #AI written journal entry 
+        file = open("src\lab14_final\Journal.txt", "a")
+        
+
         if player.health < 1 and opponent.health > 0:
             self.gameOver = True
             print("You Lose")
+            prompt= (player.name + "loses the battle against " + opponent.name)
+            AI_journaling = generate_response(prompt)
+            file.write(str(AI_journaling) + "\n")
+            file.close()
             return -1
+        
         elif opponent.health < 1 and player.health > 0:
             self.gameOver = True
             print("You Win")
+            
+            prompt= (player.name + "wins the battle against " + opponent.name)
+            AI_journaling = generate_response(prompt)
+            file.write(str(AI_journaling) + "\n")
+            file.close()
             return 1
+        
         elif player.health < 1 and opponent.health < 1:
             self.gameOver = True
             print("*** Draw ***")
+            prompt= ("Neither" + player.name + " or " + opponent.name + " win the battle")
+            AI_journaling = generate_response(prompt)
+            file.write(str(AI_journaling) + "\n")
+            file.close()
             return 0
+        
         return 0
 
     def displayResult(self, player, opponent):
@@ -111,6 +132,7 @@ class Combat:
         print(
             f"\n{player.name} used {weapons[player.weapon]}, {opponent.name} used {weapons[opponent.weapon]}"
         )
+
         if decisionArray[player.weapon][opponent.weapon]:
             opponent.damage()
 

@@ -4,6 +4,8 @@ import random
 from os.path import dirname, abspath
 import time
 from pathlib import Path
+from transformers import pipeline
+from datetime import datetime
 
 sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
 
@@ -95,6 +97,19 @@ if __name__ == "__main__":
     random.shuffle(routes)
     routes = routes[:10]
 
+    city9connected = False
+    city0connected = False
+    for route in routes:
+        if (city9connected == False) & (cities[9] in route):
+            city9connected = True
+        if (city0connected == False) & (cities[0] in route):
+            city0connected = True
+    if (city9connected == False):
+        #add connected route
+        print("hello world")
+    
+
+
     player_sprite = Sprite(sprite_path, cities[start_city])
 
     player = PyGameHumanPlayer()
@@ -113,10 +128,15 @@ if __name__ == "__main__":
     a new object of PyGameAIPlayer class."""
     player = PyGameAIPlayer(state)
 
+    #begin journal entry
+    file = open("src\lab14_final\Journal.txt", "a")
+    file.write("Date: " + str(datetime.now()) + "\n")
+    file.close()
+
+
     while True:
         time.sleep(.01)
         action = player.selectAction(state)
-        print(chr(action))
         if 0 <= int(chr(action)) <= 9:
             if int(chr(action)) != state.current_city and not state.travelling:
                 start = cities[state.current_city]
@@ -156,4 +176,5 @@ if __name__ == "__main__":
         pygame.display.update()
         if state.current_city == end_city:
             print('You have reached the end of the game!')
+            file.close()
             break
