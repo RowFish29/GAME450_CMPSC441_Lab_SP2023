@@ -164,3 +164,31 @@ if __name__ == "__main__":
     plt.plot(cities_t[:, 1], cities_t[:, 0], "r.")
     plt.show()
     print(fitness_function(cities, 0))
+
+def city_gen(size, n_cities):
+    elevation = []
+    elevation = get_elevation(size)
+
+    # normalize landscape
+    elevation = np.array(elevation)
+    elevation = (elevation - elevation.min()) / (elevation.max() - elevation.min())
+    landscape_pic = elevation_to_rgba(elevation)
+
+    # setup fitness function and GA
+    fitness = lambda cities, idx: game_fitness(
+        cities, idx, elevation=elevation, size=size
+    )
+    fitness_function, ga_instance = setup_GA(fitness, n_cities, size)
+    # Run the GA to optimize the parameters of the function.
+    ga_instance.run()
+    ga_instance.plot_fitness()
+    print("Final Population")
+    cities = ga_instance.best_solution()[0]
+    cities_t = solution_to_cities(cities, size)
+    return format_cities(cities_t)
+
+def format_cities(cities):
+    formated_cities = []
+    for city_coord in cities:
+        formated_cities.append(tuple(city_coord))
+    return formated_cities

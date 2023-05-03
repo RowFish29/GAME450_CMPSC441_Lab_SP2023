@@ -15,6 +15,8 @@ from lab11.pygame_combat import run_pygame_combat
 from lab11.pygame_human_player import PyGameHumanPlayer
 from lab11.landscape import get_landscape, get_combat_bg
 from lab11.pygame_ai_player import PyGameAIPlayer
+from lab7.ga_cities import city_gen
+from lab3.travel_cost import get_route_cost, create_route_cooredinates
 
 
 pygame.font.init()
@@ -73,6 +75,7 @@ if __name__ == "__main__":
     end_city = 9
     sprite_path = "assets/lego.png"
     sprite_speed = 1
+    currency = 500
 
     screen = setup_window(width, height, "Game World Gen Practice")
 
@@ -91,11 +94,14 @@ if __name__ == "__main__":
         "Forthyr",
     ]
 
-    cities = get_randomly_spread_cities(size, len(city_names))
+    cities = city_gen(size, len(city_names))
     routesAll = get_routes(cities)
     routes = routesAll
     random.shuffle(routes)
     routes = routes[:10]
+
+    #get route coordinates for travel costs
+    route_coordinates = create_route_cooredinates(cities, city_names, routesAll)
 
     city9connected = False
     routescity9 = []
@@ -158,6 +164,8 @@ if __name__ == "__main__":
                 destination = cities[state.destination_city]
                 player_sprite.set_location(cities[state.current_city])
                 state.travelling = True
+                # where i would put the route costs so its only subtracted once
+                # formatting differs from lab3 to this, overall project done as much as it will get
                 print(
                     "Travelling from", state.current_city, "to", state.destination_city
                 )
@@ -183,8 +191,12 @@ if __name__ == "__main__":
             state.current_city = state.destination_city
 
         if state.encounter_event:
-            run_pygame_combat(combat_surface, screen, player_sprite)
+            win_lose = run_pygame_combat(combat_surface, screen, player_sprite)
             state.encounter_event = False
+            if(win_lose == -1):
+                break
+            else:
+                currency += 50
         else:
             player_sprite.draw_sprite(screen)
         pygame.display.update()

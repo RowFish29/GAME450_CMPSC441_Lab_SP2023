@@ -129,6 +129,9 @@ def main():
     for route, route_coordinate in zip(routes, route_coordinates):
         print(f'Cost between {route[0]} and {route[1]}: {get_route_cost(route_coordinate, game_map)}')
 
+def create_route_cooredinates(city_locations, city_names, routes):
+    route_coordinates = route_to_coordinates(city_locations, city_names, routes)
+    return route_coordinates
 
 if __name__ == '__main__':
     main()

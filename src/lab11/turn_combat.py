@@ -149,7 +149,7 @@ def run_console_combat():
     computer = ComputerCombatPlayer("Computer")
 
     players = [human, computer]
-
+    game_end = 0
     # Main Combat Loop
     while not currentGame.gameOver:
         for player in players:
@@ -158,4 +158,7 @@ def run_console_combat():
         currentGame.takeTurn(human, computer)
         print("%s's health = %d" % (human.name, human.health))
         print("%s's health = %d" % (computer.name, computer.health))
-        currentGame.checkWin(human, computer)
+        game_end = currentGame.checkWin(human, computer)
+    #game over
+    if (game_end == -1):
+        return -1
