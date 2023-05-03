@@ -39,10 +39,6 @@ class PyGameAIPlayer:
                         connect_routes.append(cityNum(routes[position][0], state))
                     else:
                         one_route.append(cityNum(routes[position][0], state))
-            
-            if(connect_routes.__len__() == 0 & one_route.__len__() == 0):
-                return 9
-            
             if(connect_routes.__len__() != 0):
                 RandomSelection = random.randint(0, connect_routes.__len__() - 1)
                 self.last_city = current_city
@@ -69,6 +65,8 @@ def cityNum(travel_city, state):
 class PyGameAICombatPlayer(CombatPlayer):
     def __init__(self, name):
         super().__init__(name)
+    def update_OppChoice(self, opp_choice):
+        self.opponent_choices.append(opp_choice)
 
     def weapon_selecting_strategy(self):
         time.sleep(.05)

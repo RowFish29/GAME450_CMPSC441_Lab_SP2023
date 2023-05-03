@@ -92,22 +92,36 @@ if __name__ == "__main__":
     ]
 
     cities = get_randomly_spread_cities(size, len(city_names))
-    routes = get_routes(cities)
-
+    routesAll = get_routes(cities)
+    routes = routesAll
     random.shuffle(routes)
     routes = routes[:10]
 
     city9connected = False
+    routescity9 = []
     city0connected = False
+    routescity0 = []
+
+    #if the beginning and/or end city are not connected, find all stored routes and chose one to be
+    #connected in the map
     for route in routes:
         if (city9connected == False) & (cities[9] in route):
             city9connected = True
         if (city0connected == False) & (cities[0] in route):
             city0connected = True
-    if (city9connected == False):
-        #add connected route
-        print("hello world")
-    
+    if (city9connected == False  | city0connected == False):
+        for allroutes in routesAll:
+            if (city9connected == False) & (cities[9] in allroutes):
+                routescity9.append(allroutes)
+            if (city0connected == False) & (cities[0] in allroutes):
+                routescity0.append(allroutes)
+        if(city0connected == False):
+            route0 = routescity0[random.randint(routescity0.__len__()-1)]
+            routes.append(route0)
+        if(city9connected == False):
+            route9 = routescity9[random.randint(routescity9.__len__()-1)]
+            routes.append(route9)
+
 
 
     player_sprite = Sprite(sprite_path, cities[start_city])

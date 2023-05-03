@@ -132,12 +132,14 @@ class Combat:
         print(
             f"\n{player.name} used {weapons[player.weapon]}, {opponent.name} used {weapons[opponent.weapon]}"
         )
-
+        
+        player.update_OppChoice(opponent.weapon)
         if decisionArray[player.weapon][opponent.weapon]:
             opponent.damage()
 
         if decisionArray[opponent.weapon][player.weapon]:
             player.damage()
+
 
 
 def run_console_combat():
