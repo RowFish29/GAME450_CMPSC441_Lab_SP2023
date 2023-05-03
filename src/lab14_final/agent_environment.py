@@ -101,7 +101,7 @@ if __name__ == "__main__":
     routes = routes[:10]
 
     #get route coordinates for travel costs
-    route_coordinates = create_route_cooredinates(cities, city_names, routesAll)
+    #route_coordinates = create_route_cooredinates(cities, city_names, routesAll)
 
     city9connected = False
     routescity9 = []
